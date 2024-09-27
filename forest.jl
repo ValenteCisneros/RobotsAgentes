@@ -17,7 +17,7 @@ function forest_step(tree::TreeAgent, model)
     end
 end
 
-function forest_fire(; density = 0.60, griddims = (5, 5))
+function forest_fire(; density = 0.45, griddims = (5, 5))
     space = GridSpaceSingle(griddims; periodic = false, metric = :manhattan)
     forest = StandardABM(TreeAgent, space; agent_step! = forest_step, scheduler = Schedulers.Randomly())
 

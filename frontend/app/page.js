@@ -7,6 +7,7 @@ export default function Home() {
   let [location, setLocation] = useState("");
   let [trees, setTrees] = useState([]);
   let [gridSize, setGridSize] = useState(20);
+  let [simSpeed, setSimSpeed] = useState(2);
   const running = useRef(null);
 
   let setup = () => {
@@ -29,7 +30,7 @@ export default function Home() {
       .then(data => {
         setTrees(data["trees"]);
       });
-    }, 500);
+    }, 1000 / simSpeed);
   };
 
   const handleStop = () => {
@@ -38,6 +39,10 @@ export default function Home() {
 
   const handleGridSizeSliderChange = (event, newValue) => {
     setGridSize(newValue);
+  };
+
+  const handleSimSpeedSliderChange = (event, newValue) => {
+    setSimSpeed(newValue);
   };
 
   let burning = trees.filter(t => t.status == "burning").length;
@@ -78,6 +83,15 @@ export default function Home() {
       />
     </Grid2>
   </Grid2>
+</Box>
+<Box sx={{ width: 250 }}>
+  <Typography id="input-slider" gutterBottom>
+     Simulation speed 
+  </Typography>
+  <Slider 
+    value={simSpeed} 
+    onChange={handleSimSpeedSliderChange}
+    defaultValue={0.1} step={0.05} marks min={0.1} max={1.0} valueLabelDisplay="auto" />
 </Box>
       <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg" style={{backgroundColor:"white"}}>
       {
