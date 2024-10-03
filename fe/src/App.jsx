@@ -16,6 +16,7 @@ function App() {
   let [gridSize, setGridSize] = useState(20);
   let [simSpeed, setSimSpeed] = useState(2);
   let [trees, setTrees] = useState([]);
+  let [probability_of_spread, setProbability_of_spread] = useState(50);
 
   const running = useRef(null);
 
@@ -25,7 +26,7 @@ function App() {
     fetch("http://localhost:8000/simulations", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ dim: [gridSize, gridSize] })
+      body: JSON.stringify({ dim: [gridSize, gridSize], probability: probability_of_spread })
     }).then(resp => resp.json())
     .then(data => {
       setLocation(data["Location"]);
@@ -71,6 +72,8 @@ function App() {
     value={simSpeed} onChange={setSimSpeed} />
           <SliderField label="Grid size" min={10} max={40} step={10}
     value={gridSize} onChange={setGridSize} />
+    <SliderField label="Probability of Spread" min={1} max={100} step={1}
+    value={probability_of_spread} onChange={setProbability_of_spread} />
 
       <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg" style={{backgroundColor:"white"}}>
       {

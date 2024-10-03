@@ -4,12 +4,15 @@ using Agents, Random, Distributions
 
 @agent struct TreeAgent(GridAgent{2})
     status::TreeStatus = green
+    probability::Float64 = 0.0
 end
 
 function forest_step(tree::TreeAgent, model)
     if tree.status == burning
         for neighbor in nearby_agents(tree, model)
-            if neighbor.status == green
+            x = rand(Uniform(0,100))
+
+            if neighbor.status == green && x<= neighbor.probability
                 neighbor.status = burning
             end
         end
@@ -17,7 +20,7 @@ function forest_step(tree::TreeAgent, model)
     end
 end
 
-function forest_fire(; density = 0.45, griddims = (5, 5))
+function forest_fire(; density = 0.45, griddims = (5, 5), probability = 1.0)
     space = GridSpaceSingle(griddims; periodic = false, metric = :manhattan)
     forest = StandardABM(TreeAgent, space; agent_step! = forest_step, scheduler = Schedulers.Randomly())
 
@@ -26,6 +29,7 @@ function forest_fire(; density = 0.45, griddims = (5, 5))
             tree = add_agent!(pos, forest)
             if pos[1] == 1
                 tree.status = burning
+                tree.probability = probability
             end
         end
     end
