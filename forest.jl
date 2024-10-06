@@ -10,9 +10,10 @@ end
 function forest_step(tree::TreeAgent, model)
     if tree.status == burning
         for neighbor in nearby_agents(tree, model)
-            x = rand(Uniform(0,100))
+            neighbor.probability = rand(0:100)
+            x = rand(0:100)
 
-            if neighbor.status == green && x<= neighbor.probability
+            if neighbor.status == green && x <= neighbor.probability
                 neighbor.status = burning
             end
         end
