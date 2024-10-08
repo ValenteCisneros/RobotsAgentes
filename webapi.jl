@@ -8,8 +8,9 @@ route("/simulations", method = POST) do
     payload = jsonpayload()
     x = payload["dim"][1]
     y = payload["dim"][2]
-    probability = payload["probability"] / 100.0
+    probability = payload["probability"] 
 
+    
     model = forest_fire(griddims=(x,y), probability = probability)
     id = string(uuid1())
     instances[id] = model
